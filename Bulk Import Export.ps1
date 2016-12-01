@@ -14,7 +14,7 @@ $TargetFolder = "J:\shared\Export"
 $TargetFolder = "C:\Users\gcrowell\Documents\BulkExport"
 $BcpFormatBatFile = "SharePoint_bcp_make_format.bat"
 $BcpExportBatFile = "SharePoint_bcp_export.bat"
-$BcpExportBatFile = "SharePoint_bcp_import.bat"
+$BcpImportBatFile = "SharePoint_bcp_import.bat"
 
 
 #########################################
@@ -84,5 +84,8 @@ foreach($SqlView in $SqlDatabase.Views | Where-Object {$_.IsSystemObject -eq $fa
     # bat to import data
     ##########################################
     # bcp FinDW.Staging.FinancialStatement in "$flat_file" -f $xml_format_file -T -F 2 -e $bulk_import_log
+    # bcp DSSPPROD_UsageAndHealth.dbo.ClientServiceActionUsage in "ClientServiceActionUsage.dat" -f ClientServiceActionUsage.xml -T -F 2 -S $ServerName
+    $bcpImportCommand = ("{0} in {1}\{2}.dat -f {1}\{2}.xml -T -F 2 -S {3}" -f $FqSqlName, $TargetFolder, $SqlView.Name, $ServerName)
+    Out-File -FilePath $BcpImportBatFile -Append -InputObject "bcp $bcpImportCommand" -Encoding ascii
 }
 Get-ChildItem
