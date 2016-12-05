@@ -6,12 +6,12 @@
 
 
 # set string variables for share point server and database
-$ExportServerName = "STDBDECSUP01"
+$ExportServerName = "localhost"
 $ImportServerName = "STDBDECSUP01"
 $ImportDatabaseName = "DSSPPROD_UsageAndHealth"
-$ExportDatabaseName = "vwDSSPPROD_UsageAndHealth"
-$DataFolder = "J:\shared\Export"
+$ExportDatabaseName = "DSSPPROD_UsageAndHealth"
 $DataFolder = "C:\Users\gcrowell\Documents\BulkExport"
+$DataFolder = "J:\shared\Export"
 $BcpFormatBatFile = "SharePoint_bcp_make_format.bat"
 $BcpExportBatFile = "SharePoint_bcp_export.bat"
 $BcpImportBatFile = "SharePoint_bcp_import.bat"
@@ -89,7 +89,7 @@ foreach($SqlView in $SqlDatabase.Views | Where-Object {$_.IsSystemObject -eq $fa
     ##########################################
     # bcp FinDW.Staging.FinancialStatement in "$flat_file" -f $xml_format_file -T -F 2 -e $bulk_import_log
     # bcp DSSPPROD_UsageAndHealth.dbo.ClientServiceActionUsage in "ClientServiceActionUsage.dat" -f ClientServiceActionUsage.xml -T -F 2 -S $ExportServerName
-    $bcpImportCommand = ("{0} in {1}\{2}.dat -f {1}\{2}.xml -T -F 2 -S {3}" -f $FqImportSqlName, $DataFolder, $SqlView.Name, $ImportServerName)
+    $bcpImportCommand = ("{0} in {2}.dat -f {2}.xml -T -F 2 -S {3}" -f $FqImportSqlName, $DataFolder, $SqlView.Name, $ImportServerName)
     Out-File -FilePath $BcpImportBatFile -Append -InputObject "bcp $bcpImportCommand" -Encoding ascii
 }
 Get-ChildItem
