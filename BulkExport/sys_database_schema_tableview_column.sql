@@ -38,7 +38,14 @@ JOIN ?.sys.types AS typ
 ON col.user_type_id = typ.user_type_id
 WHERE 1=1
 ORDER BY sch.name, obj.name, col.column_id ASC'
+GO
 
 SELECT *
 FROM #gcwashere_temp_sys
 ORDER BY database_name, schema_name, table_name, column_name
+GO
+
+IF EXISTS(SELECT 1 FROM tempdb.sys.tables WHERE name LIKE '%gcwashere_temp_sys%')
+BEGIN
+	DROP TABLE #gcwashere_temp_sys;
+END
