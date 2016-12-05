@@ -1,3 +1,10 @@
+# Links
+[SharePoint 2013 - The content databases, tables and SQL queries](http://sptechbytes.blogspot.ca/2013/07/sharepoint-2013-content-databases_15.html)
+
+http://www.sharepointknight.com/2014/10/what-is-the-wss_logging-database/
+
+
+
 # VchDsSharePoint
 General SharePoint code; usage analytics
 # `CREATE-TABLE-DSSPPROD_UsageAndHealth.sql`
