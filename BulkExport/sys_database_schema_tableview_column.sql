@@ -20,7 +20,7 @@ GO
 EXEC sp_MSforeachdb '
 INSERT INTO #gcwashere_temp_sys
 SELECT 
-	''?'' AS database_name
+	''[?]'' AS database_name
 	,obj.type_desc AS object_type
 	,sch.name AS schema_name
 	,obj.name AS table_name
@@ -29,12 +29,12 @@ SELECT
 	    WHEN typ.name LIKE ''%char%'' THEN FORMATMESSAGE(''%s(%i)'',typ.name,col.max_length)
 	    ELSE typ.name
 	END AS DataType
-FROM ?.sys.objects AS obj
-JOIN ?.sys.schemas AS sch
+FROM [?].sys.objects AS obj
+JOIN [?].sys.schemas AS sch
 ON obj.schema_id = sch.schema_id
-JOIN ?.sys.columns AS col
+JOIN [?].sys.columns AS col
 ON col.object_id = obj.object_id
-JOIN ?.sys.types AS typ
+JOIN [?].sys.types AS typ
 ON col.user_type_id = typ.user_type_id
 WHERE 1=1
 ORDER BY sch.name, obj.name, col.column_id ASC'
