@@ -1,0 +1,6 @@
+<Delete xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+	<Object>
+		<TraceID>MyTrace2</TraceID>
+		<!--Example: <TraceID>QueryTuning_20130624</TraceID>-->
+	</Object>
+</Delete>

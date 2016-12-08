@@ -1,0 +1,120 @@
+<!-- This script supplied by Bill Anton http://byobi.com/blog/2013/06/extended-events-for-analysis-services/ -->
+<Create
+	xmlns="http://schemas.microsoft.com/analysisservices/2003/engine"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2"
+	xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2"
+	xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100"
+	xmlns:ddl200_200="http://schemas.microsoft.com/analysisservices/2010/engine/200/200"
+	xmlns:ddl300_300="http://schemas.microsoft.com/analysisservices/2011/engine/300/300">
+	<ObjectDefinition>
+		<Trace>
+			<ID>MyTrace2</ID>
+			<!--Example: <ID>QueryTuning_20130624</ID>-->
+			<Name>MyTrace2</Name>
+			<!--Example: <Name>QueryTuning_20130624</Name>-->
+			<ddl300_300:XEvent>
+				<event_session      name="xeas2"
+									dispatchLatency="1"
+									maxEventSize="4"
+									maxMemory="4"
+									memoryPartitionMode="none"
+									eventRetentionMode="allowSingleEventLoss"
+									trackCausality="true">
+
+					<!-- ### COMMAND EVENTS ### -->
+					<!--<event package="AS" name="CommandBegin" />-->
+					<event package="AS" name="CommandEnd" />
+
+					<!-- ### DISCOVER EVENTS ### -->
+					<!--<event package="AS" name="DiscoverBegin" />-->
+					<!--<event package="AS" name="DiscoverEnd" />-->
+
+					<!-- ### DISCOVER SERVER STATE EVENTS ### -->
+					<!--<event package="AS" name="ServerStateDiscoverBegin" />-->
+					<!--<event package="AS" name="ServerStateDiscoverEnd" />-->
+
+					<!-- ### ERRORS AND WARNING ### -->
+					<!--<event package="AS" name="Error" />-->
+
+					<!-- ### FILE LOAD AND SAVE ### -->
+					<!--<event package="AS" name="FileLoadBegin" />-->
+					<!--<event package="AS" name="FileLoadEnd" />-->
+					<!--<event package="AS" name="FileSaveBegin" />-->
+					<!--<event package="AS" name="FileSaveEnd" />-->
+					<!--<event package="AS" name="PageInBegin" />-->
+					<!--<event package="AS" name="PageInEnd" />-->
+					<!--<event package="AS" name="PageOutBegin" />-->
+					<!--<event package="AS" name="PageOutEnd" />-->
+
+					<!-- ### LOCKS ### -->
+					<!--<event package="AS" name="Deadlock" />-->
+					<!--<event package="AS" name="LockAcquired" />-->
+					<!--<event package="AS" name="LockReleased" />-->
+					<!--<event package="AS" name="LockTimeout" />-->
+					<!--<event package="AS" name="LockWaiting" />-->
+
+					<!-- ### NOTIFICATION EVENTS ### -->
+					<!--<event package="AS" name="Notification" />-->
+					<!--<event package="AS" name="UserDefined" />-->
+
+					<!-- ### PROGRESS REPORTS ### -->
+					<!--<event package="AS" name="ProgressReportBegin" />-->
+					<!--<event package="AS" name="ProgressReportCurrent" />-->
+					<!--<event package="AS" name="ProgressReportEnd" />-->
+					<!--<event package="AS" name="ProgressReportError" />-->
+
+					<!-- ### QUERY EVENTS ### -->
+					<!--<event package="AS" name="QueryBegin" />-->
+					<event package="AS" name="QueryEnd" />
+
+					<!-- ### QUERY PROCESSING ### -->
+					<!--<event package="AS" name="CalculateNonEmptyBegin" />-->
+					<!--<event package="AS" name="CalculateNonEmptyCurrent" />-->
+					<!--<event package="AS" name="CalculateNonEmptyEnd" />-->
+					<!--<event package="AS" name="CalculationEvaluation" />-->
+					<!--<event package="AS" name="CalculationEvaluationDetailedInformation" />-->
+					<!--<event package="AS" name="DaxQueryPlan" />-->
+					<!--<event package="AS" name="DirectQueryBegin" />-->
+					<!--<event package="AS" name="DirectQueryEnd" />-->
+					<!--<event package="AS" name="ExecuteMDXScriptBegin" />-->
+					<!--<event package="AS" name="ExecuteMDXScriptCurrent" />-->
+					<!--<event package="AS" name="ExecuteMDXScriptEnd" />-->
+					<!--<event package="AS" name="GetDataFromAggregation" />-->
+					<!--<event package="AS" name="GetDataFromCache" />-->
+					<!--<event package="AS" name="QueryCubeBegin" />-->
+					<!--<event package="AS" name="QueryCubeEnd" />-->
+					<!--<event package="AS" name="QueryDimension" />-->
+					<!--<event package="AS" name="QuerySubcube" />-->
+					<!--<event package="AS" name="ResourceUsage" />-->
+					<!--<event package="AS" name="QuerySubcubeVerbose" />-->
+					<!--<event package="AS" name="SerializeResultsBegin" />-->
+					<!--<event package="AS" name="SerializeResultsCurrent" />-->
+					<!--<event package="AS" name="SerializeResultsEnd" />-->
+					<!--<event package="AS" name="VertiPaqSEQueryBegin" />-->
+					<!--<event package="AS" name="VertiPaqSEQueryCacheMatch" />-->
+					<!--<event package="AS" name="VertiPaqSEQueryEnd" />-->
+
+					<!-- ### SECURITY AUDIT ### -->
+					<!--<event package="AS" name="AuditAdminOperationsEvent" />-->
+					<event package="AS" name="AuditLogin" />
+					<!--<event package="AS" name="AuditLogout" />-->
+					<!--<event package="AS" name="AuditObjectPermissionEvent" />-->
+					<!--<event package="AS" name="AuditServerStartsAndStops" />-->
+
+					<!-- ### SESSION EVENTS ### -->
+					<!--<event package="AS" name="ExistingConnection" />-->
+					<!--<event package="AS" name="ExistingSession" />-->
+					<event package="AS" name="SessionInitialize" />
+
+
+					<target package="Package0" name="event_file">
+						<!-- Make sure SSAS instance Service Account can write to this location -->
+						<parameter name="filename" value="H:\TraceData\MyTrace.xel" />
+						<!--Example: <parameter name="filename" value="C:\Program Files\Microsoft SQL Server\MSAS11.SSAS_MD\OLAP\Log\trace_results.xel" />-->
+					</target>
+				</event_session>
+			</ddl300_300:XEvent>
+		</Trace>
+	</ObjectDefinition>
+</Create>
