@@ -3,7 +3,7 @@
 ## Usage Definitions
 _Returned by `Get-SPUsageDefinition`_
 
-Analytics Usage                                         
+[Analytics Usage](https://blogs.msdn.microsoft.com/spblog/2014/04/03/sharepoint-2013-usage-analytics-the-story/)
 App Monitoring                                          
 App Statistics.                                         
 Bandwidth Monitoring                                    
@@ -16,7 +16,7 @@ Definition of usage fields for SPDistributedCache calls
 Definition of usage fields for workflow telemetry       
 Feature Use                                             
 File IO                                                 
-Page Requests                                           
+[Page Requests](https://blogs.msdn.microsoft.com/spblog/2014/04/03/sharepoint-2013-usage-analytics-the-story/)
 PowerPivot Connections                                  
 PowerPivot Load Data Usage                              
 PowerPivot Query Usage                                  
