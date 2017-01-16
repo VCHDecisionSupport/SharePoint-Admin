@@ -11,10 +11,11 @@ $ImportServerName = "STDBDECSUP01"
 $ImportDatabaseName = "DSSPPROD_UsageAndHealth"
 $ExportDatabaseName = "DSSPPROD_UsageAndHealth"
 $DataFolder = "C:\Users\gcrowell\Documents\BulkExport"
-$DataFolder = "J:\shared\Export"
+$DataFolder = "D:\shared\Export"
 $BcpFormatBatFile = "SharePoint_bcp_make_format.bat"
 $BcpExportBatFile = "SharePoint_bcp_export.bat"
 $BcpImportBatFile = "SharePoint_bcp_import.bat"
+$SqlTruncateFile = "SharePoint_TRUNCATE.sql"
 
 
 #########################################
@@ -34,6 +35,8 @@ Get-ChildItem -Path $DataFolder -Filter "*.bat" | ForEach-Object {Remove-Item -P
 Get-ChildItem -Path $DataFolder -Filter "*.xml" | ForEach-Object {Remove-Item -Path "$DataFolder\$_"}
 # remove all dat data files
 Get-ChildItem -Path $DataFolder -Filter "*.dat" | ForEach-Object {Remove-Item -Path "$DataFolder\$_"}
+# remove all sql files
+Get-ChildItem -Path $DataFolder -Filter "*.sql" | ForEach-Object {Remove-Item -Path "$DataFolder\$_"}
 
 
 #########################################
@@ -49,7 +52,7 @@ $SqlDatabases = $SqlServer.Databases
 $SqlDatabase = $SqlDatabases[$ExportDatabaseName]
 
 ##########################################
-# generate batch files
+# generate command files
 ##########################################
 # use $Database object to get list of all views then loop over these views, generating bcp commands for each one and adding the commands to batch files
 foreach($SqlView in $SqlDatabase.Views | Where-Object {$_.IsSystemObject -eq $false -and $_.Schema -ne "sys"}) 
@@ -68,13 +71,13 @@ foreach($SqlView in $SqlDatabase.Views | Where-Object {$_.IsSystemObject -eq $fa
     ##########################################
     # bat to make xml format files
     ##########################################
-    $bcpFormatCommand = ("{0} format -x -c -T -f {1}.fmt -S {2}" -f $FqExportSqlName, $SqlTable.Name, $ExportServerName)
+    $Command = ("{0} format -x -c -T -f {1}.fmt -S {2}" -f $FqExportSqlName, $SqlTable.Name, $ExportServerName)
     # bcp Staging.dbo.Statement format nul -x -c -f C:\Users\user\Documents\BulkExport\export.xml -S localhost -T
-    $bcpFormatCommand = ("{0} format nul -x -c -f {1}\{2}.xml -S {3} -T" -f $FqExportSqlName, $DataFolder, $SqlView.Name, $ExportServerName)
-    Write-Host $bcpFormatCommand
+    $Command = ("{0} format nul -x -c -f {1}\{2}.xml -S {3} -T" -f $FqExportSqlName, $DataFolder, $SqlView.Name, $ExportServerName)
+    Write-Host $Command
     #$bcpExePath $bcpCommand
     #Invoke-Command -ScriptBlock {"$bcpExePath $bcpCommand"}
-    Out-File -FilePath $BcpFormatBatFile -Append -InputObject "bcp $bcpFormatCommand" -Encoding ascii
+    Out-File -FilePath $BcpFormatBatFile -Append -InputObject "bcp $Command" -Encoding ascii
 
     ##########################################
     # bat to export data
@@ -85,6 +88,15 @@ foreach($SqlView in $SqlDatabase.Views | Where-Object {$_.IsSystemObject -eq $fa
     Out-File -FilePath $BcpExportBatFile -Append -InputObject "bcp $bcpExportCommand" -Encoding ascii
     
     ##########################################
+    # sql to truncate destination tables
+    ##########################################
+    $Command = ("TRUNCATE TABLE {0};" -f $FqExportSqlName)
+    Write-Host $Command
+    #$bcpExePath $bcpCommand
+    #Invoke-Command -ScriptBlock {"$bcpExePath $bcpCommand"}
+    Out-File -FilePath $SqlTruncateFile -Append -InputObject "$Command" -Encoding ascii
+    
+    ##########################################
     # bat to import data
     ##########################################
     # bcp FinDW.Staging.FinancialStatement in "$flat_file" -f $xml_format_file -T -F 2 -e $bulk_import_log
@@ -92,4 +104,5 @@ foreach($SqlView in $SqlDatabase.Views | Where-Object {$_.IsSystemObject -eq $fa
     $bcpImportCommand = ("{0} in {2}.dat -f {2}.xml -T -F 2 -S {3}" -f $FqImportSqlName, $DataFolder, $SqlView.Name, $ImportServerName)
     Out-File -FilePath $BcpImportBatFile -Append -InputObject "bcp $bcpImportCommand" -Encoding ascii
 }
+
 Get-ChildItem
