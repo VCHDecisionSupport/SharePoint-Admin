@@ -1,31 +1,4 @@
-USE [DSSPPROD_UsageAndHealth]
-GO
-Declare @StartDate DateTime = '2016/10/24'
-Declare @EndDate DateTime = '2016/11/07'
-
-IF OBJECT_ID('tempdb.dbo.#tempData', 'U') IS NOT NULL
-drop table  #tempData
-
-SELECT * 
-INTO   #tempdata 
-FROM   (SELECT DISTINCT CONVERT(VARCHAR(10), [logtime], 111)        AccessDate, 
-                        Substring([userlogin], 8, Len([userlogin])) [UserLogin], 
-                        SiteURL 
-        FROM   [dbo].[featureusage] 
-        WHERE 
-         --Only DASH Stats 
-         siteurl LIKE'%https://vchphcdash.healthbc.org%' 
-         AND siteurl NOT IN ( 
-                            --Exclude HomePage 
-                            'https://vchphcdash.healthbc.org/Pages/DASH.aspx' 
-                            --Exclude Request Submission Page 
-                            ,  'https://vchphcdash.healthbc.org/Pages/RequestSubmitted.aspx' 
-							, 'https://vchphcdash.healthbc.org/PublishingImages/Forms/Thumbnails.aspx')) t 
-
-SELECT  SiteURL, Count(1) #Visits
-FROM   #tempdata 
-WHERE  userlogin NOT IN( 
-                       --System Accounts
+						--System Accounts
 						'healthbc\svc_ds_sp_install'
 						,'healthbc\svc_ds_sp_crawl' 
 
@@ -51,6 +24,7 @@ WHERE  userlogin NOT IN(
 						,'vch\jsun5'
 						,'vch\wcheng2'
 						,'vch\sdhaliwa'
+						,'Vch\jtiang'
 
 						--CST
 						,'vch\cdaoust2'
@@ -58,6 +32,7 @@ WHERE  userlogin NOT IN(
 						,'vch\mradu'
 						,'vrhb\lle'
 						,'vch\dsandhu6'
+						,'vch\NJamal'
 						
 
 						--Community
@@ -73,8 +48,10 @@ WHERE  userlogin NOT IN(
 						,'vch\sroberts5'
 						,'vch\pdimarco2'
 						,'vch\dcampbell2'
+						,'Vch\egladstone'
 
 						--SI
+						,'Vch\JChan20'
 						,'vch\mli9'
 						,'vch\mjohnson2'
 						,'vch\llim'
@@ -87,7 +64,10 @@ WHERE  userlogin NOT IN(
 						,'vch\sgani2'
 						,'vch\haisake'
 						,'vch\pkaloupi'
+						,'vch\mjohnson2'
 						,'vch\sstrandb'
+						,'vch\stchow'
+						,'vch\lkawazoe'
 						,'vch\lobrien'
 						,'vch\rsu'
 						,'vch\mluk3'
@@ -105,24 +85,25 @@ WHERE  userlogin NOT IN(
 						--PPE
 						,'vch\cfung5'
 						,'vch\vzhou'
+						,'vch\pfennell'
+						,'vch\czhang9'
+						,'vch\AHay2'
 
 						-- Admins
 						,'vch\vguerrero'
 						,'vch\jsheppard'
 
 						-- Other
+						
+						,'vch\FLi3'
 						,'vch\cmah'
 						,'vch\kredfern2'
+						,'vch\vzhou'
 						,'vch\jwright3'
+						,'vch\wcheng2'
+						,'vch\yliu5'
 						,'vch\zkurzawa'
 						,'vch\ang8'
 						,'vch\elai3'
 						,'vch\cporras2'
 						,'vch\clagbao'
-
-) 
-and AccessDate between @StartDate and @EndDate
-Group by  SiteURL
-ORDER  BY #Visits desc, SiteURL
-
-go 

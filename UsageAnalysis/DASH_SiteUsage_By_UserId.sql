@@ -37,15 +37,20 @@ WHERE  userlogin NOT IN(
 						,'vch\aknox'
 						,'vch\vaggarwal'
 						,'vch\kluers'
-						,'vch\vguerrero'
+
 						,'vch\mchase2'
 						,'vch\mchase'
 						,'vch\thearty2'
+						,'vch\pchung2'
+						,'vch\eyoung'
 
 						--Acute
 						,'vch\aproctor'
 						,'vch\rdong'
 						,'vch\ssirett'
+						,'vch\jsun5'
+						,'vch\wcheng2'
+						,'vch\sdhaliwa'
 
 						--CST
 						,'vch\cdaoust2'
@@ -53,10 +58,10 @@ WHERE  userlogin NOT IN(
 						,'vch\mradu'
 						,'vrhb\lle'
 						,'vch\dsandhu6'
+						
 
 						--Community
 						,'vch\gcrowell' 
-						,'vch\therart2'
 						,'vch\llum5'
 						,'vch\achen5'
 						,'vch\mchuong'
@@ -66,9 +71,12 @@ WHERE  userlogin NOT IN(
 						,'vch\gtaghizadeh'
 						,'vch\nnosseir'
 						,'vch\sroberts5'
+						,'vch\pdimarco2'
+						,'vch\dcampbell2'
 
 						--SI
 						,'vch\mli9'
+						,'vch\mjohnson2'
 						,'vch\llim'
 						,'vch\cferguson2'
 						,'vch\ciningo'
@@ -79,27 +87,39 @@ WHERE  userlogin NOT IN(
 						,'vch\sgani2'
 						,'vch\haisake'
 						,'vch\pkaloupi'
-						,'vch\mjohnson2'
 						,'vch\sstrandb'
-						,'vch\stchow'
-						,'vch\lkawazoe'
 						,'vch\lobrien'
 						,'vch\rsu'
 						,'vch\mluk3'
 						,'vrhb\khawkins'
 						,'vrhb\stwong'
+						,'vch\stchow'
+						,'vch\ewu4'
+						,'vch\ddong'
+						,'vch\rmartinez3'
+						,'vch\jluo2'
+						,'vch\yliu5'
+						,'vch\lkawazoe'
+						,'vch\cswindellsnader'
 
 						--PPE
 						,'vch\cfung5'
+						,'vch\vzhou'
+
+						-- Admins
+						,'vch\vguerrero'
+						,'vch\jsheppard'
 
 						-- Other
+						,'vch\cmah'
 						,'vch\kredfern2'
-						,'vch\vzhou'
 						,'vch\jwright3'
-						,'vch\wcheng2'
-						,'vch\yliu5'
 						,'vch\zkurzawa'
 						,'vch\ang8'
+						,'vch\elai3'
+						,'vch\cporras2'
+						,'vch\clagbao'
+
 ) 
 and AccessDate between @StartDate and @EndDate
 Group by  userlogin
