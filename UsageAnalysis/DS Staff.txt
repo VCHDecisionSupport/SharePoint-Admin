@@ -1,9 +1,14 @@
 						--System Accounts
 						'healthbc\svc_ds_sp_install'
 						,'healthbc\svc_ds_sp_crawl' 
+						,'healthbc\svc_ds_sp_webapp'
+						,'healthbc\svc_ds_sp_farm'
+						,'vch\svcdswebtstsql'
+						,'VCH\GCrowell_SA'
 
 						--CoOp
 						,'vch\jhu12'
+						,'vch\lzeleschuk'
 
 						--DMR
 						,'vch\achung3'
@@ -88,6 +93,7 @@
 						,'vch\pfennell'
 						,'vch\czhang9'
 						,'vch\AHay2'
+						,'vch\nli3'
 
 						-- Admins
 						,'vch\vguerrero'

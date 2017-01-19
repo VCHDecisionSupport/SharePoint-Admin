@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "SP Analytics", "SP Analytics.rptproj", "{6A04B854-8C80-4A12-9931-884E60AF804E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		DebugLocal|Default = DebugLocal|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6A04B854-8C80-4A12-9931-884E60AF804E}.Debug|Default.ActiveCfg = Debug
+		{6A04B854-8C80-4A12-9931-884E60AF804E}.Debug|Default.Build.0 = DebugLocal
+		{6A04B854-8C80-4A12-9931-884E60AF804E}.Debug|Default.Deploy.0 = DebugLocal
+		{6A04B854-8C80-4A12-9931-884E60AF804E}.DebugLocal|Default.ActiveCfg = DebugLocal
+		{6A04B854-8C80-4A12-9931-884E60AF804E}.DebugLocal|Default.Build.0 = DebugLocal
+		{6A04B854-8C80-4A12-9931-884E60AF804E}.Release|Default.ActiveCfg = Release
+		{6A04B854-8C80-4A12-9931-884E60AF804E}.Release|Default.Build.0 = Release
+		{6A04B854-8C80-4A12-9931-884E60AF804E}.Release|Default.Deploy.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
