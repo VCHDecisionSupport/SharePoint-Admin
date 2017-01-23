@@ -157,7 +157,7 @@ SELECT CONVERT(VARCHAR(10), [logtime], 111)        AccessDate,
     <ReportSection>
       <Body>
         <ReportItems>
-          <Tablix Name="Tablix2">
+          <Tablix Name="Files">
             <TablixCorner>
               <TablixCornerRows>
                 <TablixCornerRow>
@@ -427,9 +427,11 @@ SELECT CONVERT(VARCHAR(10), [logtime], 111)        AccessDate,
                 </TablixMember>
               </TablixMembers>
             </TablixRowHierarchy>
+            <RepeatColumnHeaders>true</RepeatColumnHeaders>
+            <RepeatRowHeaders>true</RepeatRowHeaders>
             <DataSetName>CubeUsage</DataSetName>
-            <Top>0.5207in</Top>
-            <Left>0.36488in</Left>
+            <Top>0.53459in</Top>
+            <Left>0.18124in</Left>
             <Height>0.5in</Height>
             <Width>6.60417in</Width>
             <Style>
@@ -445,7 +447,7 @@ SELECT CONVERT(VARCHAR(10), [logtime], 111)        AccessDate,
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Usage Report for Static and Dynamic Reports</Value>
+                    <Value>Usage Report for Static Reports</Value>
                     <Style>
                       <FontSize>18pt</FontSize>
                       <FontWeight>Bold</FontWeight>
@@ -454,13 +456,13 @@ SELECT CONVERT(VARCHAR(10), [logtime], 111)        AccessDate,
                   </TextRun>
                 </TextRuns>
                 <Style>
-                  <TextAlign>Center</TextAlign>
+                  <TextAlign>Left</TextAlign>
                 </Style>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>0.05556in</Top>
-            <Left>0.36488in</Left>
+            <Top>0.08333in</Top>
+            <Left>0.18124in</Left>
             <Height>0.40959in</Height>
             <Width>6.60417in</Width>
             <ZIndex>1</ZIndex>

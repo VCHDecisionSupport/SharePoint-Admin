@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
   <AutoRefresh>0</AutoRefresh>
-  <InitialPageName>balanced scorecard</InitialPageName>
   <DataSources>
     <DataSource Name="UsageAndHealth">
       <DataSourceReference>SPUsageAndHealth</DataSourceReference>
       <rd:SecurityType>None</rd:SecurityType>
       <rd:DataSourceID>50b28a76-1b95-45d6-8690-41a9afd392a0</rd:DataSourceID>
+    </DataSource>
+    <DataSource Name="ReportServer">
+      <DataSourceReference>ReportServer</DataSourceReference>
+      <rd:SecurityType>None</rd:SecurityType>
+      <rd:DataSourceID>3b3fb02f-541f-4f0c-9210-91f3fa86c6cf</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
@@ -23,182 +27,150 @@
         </Field>
       </Fields>
     </DataSet>
-    <DataSet Name="CubeUsage">
+    <DataSet Name="SSRSReports_Usage">
       <Query>
-        <DataSourceName>UsageAndHealth</DataSourceName>
+        <DataSourceName>ReportServer</DataSourceName>
         <QueryParameters>
-          <QueryParameter Name="@StartDate">
-            <Value>=Parameters!StartDate.Value</Value>
-            <rd:UserDefined>true</rd:UserDefined>
-          </QueryParameter>
           <QueryParameter Name="@EndDate">
             <Value>=Parameters!EndDate.Value</Value>
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
+          <QueryParameter Name="@StartDate">
+            <Value>=Parameters!StartDate.Value</Value>
+            <rd:UserDefined>true</rd:UserDefined>
+          </QueryParameter>
         </QueryParameters>
-        <CommandText>USE [DSSPPROD_UsageAndHealth] 
+        <CommandText>SELECT
 
-SELECT 
-	  case when ReferrerQueryString like '%CasenotesByReason(MGR15).xlsx%' then  'CasenotesByReason(MGR15).xlsx'
-	  else
-	  replace(replace(ReferrerQueryString, '?id=/sites/analytics/Documents/',''),'%20',' ')
-	  end FileNames
-	   , Substring([userlogin], 8, Len([userlogin])) UserInfo
-      ,count(1) RequestCount
-	  ,sum(QueryCount) QueryCount
-	  ,sum(RequestCount) RequestCount2
+ cat.Name 'Report_Name'
+ ,ex.UserName UserId
+FROM ExecutionLog AS ex 
+INNER JOIN Catalog AS cat ON ex.ReportID = cat.ItemID 
+WHERE ex.UserName NOT IN (
+						--System Accounts
+						'VCH\SPDBDECSUP05svc'
+						,'VRHB\V0042491'
 
-  FROM [DSSPPROD_UsageAndHealth].[dbo].[RequestUsage]
-  where ServerUrl like '%https://decisionsupport.healthbc.org%' 
-  and SiteUrl like '%/sites/analytics%'
-  and DocumentPath like '%/documents%'
- and [ReferrerQueryString] &lt;&gt; ''
-  and [UserLogin] not in (
-
-  --System Accounts
-						--'i:0#.w|healthbc\svc_ds_sp_install'
-						--,'i:0#.w|healthbc\svc_ds_sp_crawl' 
-						--,'i:0#.w|healthbc\svc_ds_sp_webapp'
-						--,'i:0#.w|healthbc\svc_ds_sp_farm'
-						--,'i:0#.w|vch\svcdswebtstsql'
-						--,'i:0#.w|vch\GCrowell_SA'
-
-						--CoOp
-						'i:0#.w|vch\jhu12'
-						,'i:0#.w|vch\lzeleschuk'
+						--CoOp						
+						,'vch\jhu12'
+						,'vch\lzeleschuk'
 
 						--DMR
-						,'i:0#.w|vch\achung3'
-						,'i:0#.w|vch\aknox'
-						,'i:0#.w|vch\vaggarwal'
-						,'i:0#.w|vch\kluers'
+						,'vch\achung3'
+						,'vch\aknox'
+						,'vch\vaggarwal'
+						,'vch\kluers'
 
-						,'i:0#.w|vch\mchase2'
-						,'i:0#.w|vch\mchase'
-						,'i:0#.w|vch\thearty2'
-						,'i:0#.w|vch\pchung2'
-						,'i:0#.w|vch\eyoung'
+						,'vch\mchase2'
+						,'vch\mchase'
+						,'vch\thearty2'
+						,'vch\pchung2'
+						,'vch\eyoung'
 
 						--Acute
-						,'i:0#.w|vch\aproctor'
-						,'i:0#.w|vch\rdong'
-						,'i:0#.w|vch\ssirett'
-						,'i:0#.w|vch\jsun5'
-						,'i:0#.w|vch\wcheng2'
-						,'i:0#.w|vch\sdhaliwa'
-						,'i:0#.w|vch\jtiang'
+						,'vch\aproctor'
+						,'vch\rdong'
+						,'vch\ssirett'
+						,'vch\jsun5'
+						,'vch\wcheng2'
+						,'vch\sdhaliwa'
+						,'Vch\jtiang'
 
 						--CST
-						,'i:0#.w|vch\cdaoust2'
-						,'i:0#.w|vch\sjiwa'
-						,'i:0#.w|vch\mradu'
-						,'i:0#.w|vrhb\lle'
-						,'i:0#.w|vch\dsandhu6'
-						,'i:0#.w|vch\NJamal'
+						,'vch\cdaoust2'
+						,'vch\sjiwa'
+						,'vch\mradu'
+						,'vrhb\lle'
+						,'vch\dsandhu6'
+						,'vch\NJamal'
 						
 
 						--Community
-						,'i:0#.w|vch\gcrowell' 
-						,'i:0#.w|vch\llum5'
-						,'i:0#.w|vch\achen5'
-						,'i:0#.w|vch\mchuong'
-						,'i:0#.w|vch\useetharaman'
-						,'i:0#.w|vch\rlee10'
-						,'i:0#.w|vch\dli4'
-						,'i:0#.w|vch\gtaghizadeh'
-						,'i:0#.w|vch\nnosseir'
-						,'i:0#.w|vch\sroberts5'
-						,'i:0#.w|vch\pdimarco2'
-						,'i:0#.w|vch\dcampbell2'
-						,'i:0#.w|vch\egladstone'
+						,'vch\gcrowell' 
+						,'vch\llum5'
+						,'vch\achen5'
+						,'vch\mchuong'
+						,'vch\useetharaman'
+						,'vch\rlee10'
+						,'vch\dli4'
+						,'vch\gtaghizadeh'
+						,'vch\nnosseir'
+						,'vch\sroberts5'
+						,'vch\pdimarco2'
+						,'vch\dcampbell2'
+						,'Vch\egladstone'
 
 						--SI
-						,'i:0#.w|vch\JChan20'
-						,'i:0#.w|vch\mli9'
-						,'i:0#.w|vch\mjohnson2'
-						,'i:0#.w|vch\llim'
-						,'i:0#.w|vch\cferguson2'
-						,'i:0#.w|vch\ciningo'
-						,'i:0#.w|vch\ayuen'
-						,'i:0#.w|vch\ryao3'
-						,'i:0#.w|vch\snanji'
-						,'i:0#.w|vch\mli11'
-						,'i:0#.w|vch\sgani2'
-						,'i:0#.w|vch\haisake'
-						,'i:0#.w|vch\pkaloupi'
-						,'i:0#.w|vch\mjohnson2'
-						,'i:0#.w|vch\sstrandb'
-						,'i:0#.w|vch\stchow'
-						,'i:0#.w|vch\lkawazoe'
-						,'i:0#.w|vch\lobrien'
-						,'i:0#.w|vch\rsu'
-						,'i:0#.w|vch\mluk3'
-						,'i:0#.w|vrhb\khawkins'
-						,'i:0#.w|vrhb\stwong'
-						,'i:0#.w|vch\stchow'
-						,'i:0#.w|vch\ewu4'
-						,'i:0#.w|vch\ddong'
-						,'i:0#.w|vch\rmartinez3'
-						,'i:0#.w|vch\jluo2'
-						,'i:0#.w|vch\yliu5'
-						,'i:0#.w|vch\lkawazoe'
-						,'i:0#.w|vch\cswindellsnader'
+						,'Vch\JChan20'
+						,'vch\mli9'
+						,'vch\mjohnson2'
+						,'vch\llim'
+						,'vch\cferguson2'
+						,'vch\ciningo'
+						,'vch\ayuen'
+						,'vch\ryao3'
+						,'vch\snanji'
+						,'vch\mli11'
+						,'vch\sgani2'
+						,'vch\haisake'
+						,'vch\pkaloupi'
+						,'vch\mjohnson2'
+						,'vch\sstrandb'
+						,'vch\stchow'
+						,'vch\lkawazoe'
+						,'vch\lobrien'
+						,'vch\rsu'
+						,'vch\mluk3'
+						,'vrhb\khawkins'
+						,'vrhb\stwong'
+						,'vch\stchow'
+						,'vch\ewu4'
+						,'vch\ddong'
+						,'vch\rmartinez3'
+						,'vch\jluo2'
+						,'vch\yliu5'
+						,'vch\lkawazoe'
+						,'vch\cswindellsnader'
 
 						--PPE
-						,'i:0#.w|vch\cfung5'
-						,'i:0#.w|vch\vzhou'
-						,'i:0#.w|vch\pfennell'
-						,'i:0#.w|vch\czhang9'
-						,'i:0#.w|vch\AHay2'
-						,'i:0#.w|vch\nli3'
+						,'vch\cfung5'
+						,'vch\vzhou'
+						,'vch\pfennell'
+						,'vch\czhang9'
+						,'vch\AHay2'
+						,'vch\nli3'
 
 						-- Admins
-						,'i:0#.w|vch\vguerrero'
-						,'i:0#.w|vch\jsheppard'
+						,'vch\vguerrero'
+						,'vch\jsheppard'
 
 						-- Other
 						
-						,'i:0#.w|vch\FLi3'
-						,'i:0#.w|vch\cmah'
-						,'i:0#.w|vch\kredfern2'
-						,'i:0#.w|vch\vzhou'
-						,'i:0#.w|vch\jwright3'
-						,'i:0#.w|vch\wcheng2'
-						,'i:0#.w|vch\yliu5'
-						,'i:0#.w|vch\zkurzawa'
-						,'i:0#.w|vch\ang8'
-						,'i:0#.w|vch\elai3'
-						,'i:0#.w|vch\cporras2'
-						,'i:0#.w|vch\clagbao'
-
-)
- AND [logtime] BETWEEN @StartDate AND @EndDate
- Group by case when ReferrerQueryString like '%CasenotesByReason(MGR15).xlsx%' then  'CasenotesByReason(MGR15).xlsx'
-	  else
-	  replace(replace(ReferrerQueryString, '?id=/sites/analytics/Documents/',''),'%20',' ')
-	  end ,Substring([userlogin], 8, Len([userlogin]))
-order by FileNames, UserInfo</CommandText>
+						,'vch\FLi3'
+						,'vch\cmah'
+						,'vch\kredfern2'
+						,'vch\vzhou'
+						,'vch\jwright3'
+						,'vch\wcheng2'
+						,'vch\yliu5'
+						,'vch\zkurzawa'
+						,'vch\ang8'
+						,'vch\elai3'
+						,'vch\cporras2'
+						,'vch\clagbao'
+	)
+	AND ex.TimeStart BETWEEN @StartDate AND @EndDate
+	Group by cat.Name, ex.UserName
+ORDER BY cat.Name,  ex.UserName</CommandText>
       </Query>
       <Fields>
-        <Field Name="FileNames">
-          <DataField>FileNames</DataField>
+        <Field Name="Report_Name">
+          <DataField>Report_Name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="UserInfo">
-          <DataField>UserInfo</DataField>
+        <Field Name="UserId">
+          <DataField>UserId</DataField>
           <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="RequestCount">
-          <DataField>RequestCount</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-        <Field Name="QueryCount">
-          <DataField>QueryCount</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-        <Field Name="RequestCount2">
-          <DataField>RequestCount2</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
@@ -207,29 +179,31 @@ order by FileNames, UserInfo</CommandText>
     <ReportSection>
       <Body>
         <ReportItems>
-          <Tablix Name="Cubes">
+          <Tablix Name="SSRS_Report">
             <TablixCorner>
               <TablixCornerRows>
                 <TablixCornerRow>
                   <TablixCornerCell>
                     <CellContents>
-                      <Textbox Name="Textbox14">
+                      <Textbox Name="Textbox5">
                         <CanGrow>true</CanGrow>
                         <KeepTogether>true</KeepTogether>
                         <Paragraphs>
                           <Paragraph>
                             <TextRuns>
                               <TextRun>
-                                <Value>Cube Name</Value>
+                                <Value>Report Name</Value>
                                 <Style>
                                   <FontWeight>Bold</FontWeight>
                                 </Style>
                               </TextRun>
                             </TextRuns>
-                            <Style />
+                            <Style>
+                              <TextAlign>Left</TextAlign>
+                            </Style>
                           </Paragraph>
                         </Paragraphs>
-                        <rd:DefaultName>Textbox14</rd:DefaultName>
+                        <rd:DefaultName>Textbox5</rd:DefaultName>
                         <Style>
                           <Border>
                             <Color>LightGrey</Color>
@@ -250,16 +224,7 @@ order by FileNames, UserInfo</CommandText>
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>1.625in</Width>
-                </TablixColumn>
-                <TablixColumn>
-                  <Width>1.20833in</Width>
-                </TablixColumn>
-                <TablixColumn>
-                  <Width>1in</Width>
-                </TablixColumn>
-                <TablixColumn>
-                  <Width>1.15625in</Width>
+                  <Width>1.60417in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -268,125 +233,25 @@ order by FileNames, UserInfo</CommandText>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="UserInfo">
+                        <Textbox Name="UserId">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!UserInfo.Value</Value>
-                                  <Style>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>UserInfo</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="RequestCount">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Sum(Fields!RequestCount.Value)</Value>
+                                  <Value>=Fields!UserId.Value</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
-                                <TextAlign>Center</TextAlign>
+                                <TextAlign>Left</TextAlign>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>RequestCount</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="QueryCount">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Sum(Fields!QueryCount.Value)</Value>
-                                  <Style>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>QueryCount</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="RequestCount2">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Sum(Fields!RequestCount2.Value)</Value>
-                                  <Style>
-                                    <FontSize>9pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>RequestCount2</rd:DefaultName>
+                          <rd:DefaultName>UserId</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -410,7 +275,7 @@ order by FileNames, UserInfo</CommandText>
                   <TablixHeader>
                     <Size>0.25in</Size>
                     <CellContents>
-                      <Textbox Name="Textbox12">
+                      <Textbox Name="Textbox1">
                         <CanGrow>true</CanGrow>
                         <KeepTogether>true</KeepTogether>
                         <Paragraphs>
@@ -423,121 +288,9 @@ order by FileNames, UserInfo</CommandText>
                                 </Style>
                               </TextRun>
                             </TextRuns>
-                            <Style />
-                          </Paragraph>
-                        </Paragraphs>
-                        <rd:DefaultName>Textbox12</rd:DefaultName>
-                        <Style>
-                          <Border>
-                            <Color>LightGrey</Color>
-                            <Style>Solid</Style>
-                          </Border>
-                          <BackgroundColor>#8ab9f2</BackgroundColor>
-                          <PaddingLeft>2pt</PaddingLeft>
-                          <PaddingRight>2pt</PaddingRight>
-                          <PaddingTop>2pt</PaddingTop>
-                          <PaddingBottom>2pt</PaddingBottom>
-                        </Style>
-                      </Textbox>
-                    </CellContents>
-                  </TablixHeader>
-                  <TablixMembers>
-                    <TablixMember />
-                  </TablixMembers>
-                </TablixMember>
-                <TablixMember>
-                  <TablixHeader>
-                    <Size>0.25in</Size>
-                    <CellContents>
-                      <Textbox Name="Textbox19">
-                        <CanGrow>true</CanGrow>
-                        <KeepTogether>true</KeepTogether>
-                        <Paragraphs>
-                          <Paragraph>
-                            <TextRuns>
-                              <TextRun>
-                                <Value>Request Count</Value>
-                                <Style>
-                                  <FontWeight>Bold</FontWeight>
-                                </Style>
-                              </TextRun>
-                            </TextRuns>
-                            <Style />
-                          </Paragraph>
-                        </Paragraphs>
-                        <rd:DefaultName>Textbox19</rd:DefaultName>
-                        <Style>
-                          <Border>
-                            <Color>LightGrey</Color>
-                            <Style>Solid</Style>
-                          </Border>
-                          <BackgroundColor>#8ab9f2</BackgroundColor>
-                          <PaddingLeft>2pt</PaddingLeft>
-                          <PaddingRight>2pt</PaddingRight>
-                          <PaddingTop>2pt</PaddingTop>
-                          <PaddingBottom>2pt</PaddingBottom>
-                        </Style>
-                      </Textbox>
-                    </CellContents>
-                  </TablixHeader>
-                  <TablixMembers>
-                    <TablixMember />
-                  </TablixMembers>
-                </TablixMember>
-                <TablixMember>
-                  <TablixHeader>
-                    <Size>0.25in</Size>
-                    <CellContents>
-                      <Textbox Name="Textbox4">
-                        <CanGrow>true</CanGrow>
-                        <KeepTogether>true</KeepTogether>
-                        <Paragraphs>
-                          <Paragraph>
-                            <TextRuns>
-                              <TextRun>
-                                <Value>Query Count</Value>
-                                <Style>
-                                  <FontWeight>Bold</FontWeight>
-                                </Style>
-                              </TextRun>
-                            </TextRuns>
-                            <Style />
-                          </Paragraph>
-                        </Paragraphs>
-                        <rd:DefaultName>Textbox4</rd:DefaultName>
-                        <Style>
-                          <Border>
-                            <Color>LightGrey</Color>
-                            <Style>Solid</Style>
-                          </Border>
-                          <BackgroundColor>#8ab9f2</BackgroundColor>
-                          <PaddingLeft>2pt</PaddingLeft>
-                          <PaddingRight>2pt</PaddingRight>
-                          <PaddingTop>2pt</PaddingTop>
-                          <PaddingBottom>2pt</PaddingBottom>
-                        </Style>
-                      </Textbox>
-                    </CellContents>
-                  </TablixHeader>
-                </TablixMember>
-                <TablixMember>
-                  <TablixHeader>
-                    <Size>0.25in</Size>
-                    <CellContents>
-                      <Textbox Name="Textbox1">
-                        <CanGrow>true</CanGrow>
-                        <KeepTogether>true</KeepTogether>
-                        <Paragraphs>
-                          <Paragraph>
-                            <TextRuns>
-                              <TextRun>
-                                <Value>Request Count2</Value>
-                                <Style>
-                                  <FontWeight>Bold</FontWeight>
-                                </Style>
-                              </TextRun>
-                            </TextRuns>
-                            <Style />
+                            <Style>
+                              <TextAlign>Left</TextAlign>
+                            </Style>
                           </Paragraph>
                         </Paragraphs>
                         <rd:DefaultName>Textbox1</rd:DefaultName>
@@ -561,36 +314,38 @@ order by FileNames, UserInfo</CommandText>
             <TablixRowHierarchy>
               <TablixMembers>
                 <TablixMember>
-                  <Group Name="FileNames">
+                  <Group Name="Report_Name">
                     <GroupExpressions>
-                      <GroupExpression>=Fields!FileNames.Value</GroupExpression>
+                      <GroupExpression>=Fields!Report_Name.Value</GroupExpression>
                     </GroupExpressions>
                   </Group>
                   <SortExpressions>
                     <SortExpression>
-                      <Value>=Fields!FileNames.Value</Value>
+                      <Value>=Fields!Report_Name.Value</Value>
                     </SortExpression>
                   </SortExpressions>
                   <TablixHeader>
-                    <Size>3.54167in</Size>
+                    <Size>3.70833in</Size>
                     <CellContents>
-                      <Textbox Name="FileNames">
+                      <Textbox Name="Report_Name1">
                         <CanGrow>true</CanGrow>
                         <KeepTogether>true</KeepTogether>
                         <Paragraphs>
                           <Paragraph>
                             <TextRuns>
                               <TextRun>
-                                <Value>=Fields!FileNames.Value</Value>
+                                <Value>=Fields!Report_Name.Value</Value>
                                 <Style>
                                   <FontSize>9pt</FontSize>
                                 </Style>
                               </TextRun>
                             </TextRuns>
-                            <Style />
+                            <Style>
+                              <TextAlign>Left</TextAlign>
+                            </Style>
                           </Paragraph>
                         </Paragraphs>
-                        <rd:DefaultName>FileNames</rd:DefaultName>
+                        <rd:DefaultName>Report_Name1</rd:DefaultName>
                         <Style>
                           <Border>
                             <Color>LightGrey</Color>
@@ -605,29 +360,18 @@ order by FileNames, UserInfo</CommandText>
                     </CellContents>
                   </TablixHeader>
                   <TablixMembers>
-                    <TablixMember>
-                      <Group Name="UserInfo">
-                        <GroupExpressions>
-                          <GroupExpression>=Fields!UserInfo.Value</GroupExpression>
-                        </GroupExpressions>
-                      </Group>
-                      <SortExpressions>
-                        <SortExpression>
-                          <Value>=Fields!UserInfo.Value</Value>
-                        </SortExpression>
-                      </SortExpressions>
-                    </TablixMember>
+                    <TablixMember />
                   </TablixMembers>
                 </TablixMember>
               </TablixMembers>
             </TablixRowHierarchy>
             <RepeatColumnHeaders>true</RepeatColumnHeaders>
             <RepeatRowHeaders>true</RepeatRowHeaders>
-            <DataSetName>CubeUsage</DataSetName>
+            <DataSetName>SSRSReports_Usage</DataSetName>
             <Top>0.53459in</Top>
             <Left>0.18124in</Left>
             <Height>0.5in</Height>
-            <Width>8.53125in</Width>
+            <Width>5.3125in</Width>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -641,7 +385,7 @@ order by FileNames, UserInfo</CommandText>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Usage Report for Cubes</Value>
+                    <Value>Usage Report for SSRS Reports</Value>
                     <Style>
                       <FontSize>18pt</FontSize>
                       <FontWeight>Bold</FontWeight>
@@ -655,10 +399,10 @@ order by FileNames, UserInfo</CommandText>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>0.05556in</Top>
+            <Top>0.08333in</Top>
             <Left>0.18124in</Left>
             <Height>0.40959in</Height>
-            <Width>6.60417in</Width>
+            <Width>5.3125in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -672,10 +416,10 @@ order by FileNames, UserInfo</CommandText>
             </Style>
           </Textbox>
         </ReportItems>
-        <Height>1.16625in</Height>
+        <Height>1.135in</Height>
         <Style />
       </Body>
-      <Width>8.98332in</Width>
+      <Width>7.56313in</Width>
       <Page>
         <PageHeader>
           <Height>1in</Height>
@@ -687,7 +431,7 @@ order by FileNames, UserInfo</CommandText>
               <Value>Scorecard_Horiz_header_blank1</Value>
               <Sizing>Fit</Sizing>
               <Height>1in</Height>
-              <Width>8.98332in</Width>
+              <Width>7.53958in</Width>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -710,8 +454,9 @@ order by FileNames, UserInfo</CommandText>
               <Source>Embedded</Source>
               <Value>Scorecard_Horiz_footer</Value>
               <Sizing>Fit</Sizing>
+              <Top>0cm</Top>
               <Height>0.75in</Height>
-              <Width>8.98332in</Width>
+              <Width>7.53958in</Width>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -739,9 +484,8 @@ order by FileNames, UserInfo</CommandText>
               </Paragraphs>
               <rd:DefaultName>Textbox_ReportDate</rd:DefaultName>
               <Top>0.39741cm</Top>
-              <Left>0.46035cm</Left>
               <Height>0.23958in</Height>
-              <Width>7.375in</Width>
+              <Width>7.16459in</Width>
               <ZIndex>1</ZIndex>
               <Style>
                 <Border>

@@ -6,20 +6,28 @@
       <Name>SPUsageAndHealth.rds</Name>
       <FullPath>SPUsageAndHealth.rds</FullPath>
     </ProjectItem>
+    <ProjectItem>
+      <Name>ReportServer.rds</Name>
+      <FullPath>ReportServer.rds</FullPath>
+    </ProjectItem>
   </DataSources>
   <DataSets />
   <Reports>
+    <ProjectItem>
+      <Name>Report Usage Report.rdl</Name>
+      <FullPath>Report Usage Report.rdl</FullPath>
+    </ProjectItem>
     <ProjectItem>
       <Name>Report_Usage_Cube.rdl</Name>
       <FullPath>Report_Usage_Cube.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
-      <Name>Report_Usage_Files.rdl</Name>
-      <FullPath>Report_Usage_Files.rdl</FullPath>
+      <Name>Report_Usage_SSRS.rdl</Name>
+      <FullPath>Report_Usage_SSRS.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
-      <Name>Report Usage Report.rdl</Name>
-      <FullPath>Report Usage Report.rdl</FullPath>
+      <Name>Report_Usage_Files.rdl</Name>
+      <FullPath>Report_Usage_Files.rdl</FullPath>
     </ProjectItem>
   </Reports>
   <Configurations>
@@ -29,10 +37,11 @@
       <Options>
         <OutputPath>bin\Debug</OutputPath>
         <TargetServerVersion>SSRS2008R2</TargetServerVersion>
-        <TargetFolder>BSI</TargetFolder>
+        <TargetServerURL>http://stdsdb004/ReportServer</TargetServerURL>
+        <TargetFolder>/test/SP Analytics</TargetFolder>
         <TargetDataSourceFolder>Data Sources</TargetDataSourceFolder>
-        <TargetDatasetFolder>Datasets</TargetDatasetFolder>
-        <TargetReportPartFolder>Report Parts</TargetReportPartFolder>
+        <TargetDatasetFolder>/test/SP Analytics</TargetDatasetFolder>
+        <TargetReportPartFolder>/test/SP Analytics/Report Parts</TargetReportPartFolder>
       </Options>
     </Configuration>
     <Configuration>
