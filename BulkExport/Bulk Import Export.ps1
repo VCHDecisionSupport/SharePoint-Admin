@@ -6,16 +6,15 @@
 
 
 # set string variables for share point server and database
-$ExportServerName = "localhost"
+$ExportServerName = "SPDBSSPS008"
 $ImportServerName = "STDBDECSUP01"
 $ImportDatabaseName = "DSSPPROD_UsageAndHealth"
 $ExportDatabaseName = "DSSPPROD_UsageAndHealth"
-$DataFolder = "C:\Users\gcrowell\Documents\BulkExport"
 $DataFolder = "D:\shared\Export"
-$BcpFormatBatFile = "SharePoint_bcp_make_format.bat"
-$BcpExportBatFile = "SharePoint_bcp_export.bat"
-$BcpImportBatFile = "SharePoint_bcp_import.bat"
-$SqlTruncateFile = "SharePoint_TRUNCATE.sql"
+$BcpFormatBatFile = "src_1_SharePoint_bcp_make_format.bat"
+$BcpExportBatFile = "src_2_SharePoint_bcp_export.bat"
+$SqlTruncateFile = "dst_1_SharePoint_TRUNCATE.sql"
+$BcpImportBatFile = "dst_2_SharePoint_bcp_import.bat"
 
 
 #########################################
@@ -29,6 +28,10 @@ if(-not(Test-Path -Path $DataFolder))
 }
 # set working directory to $DataFolder
 Set-Location -Path $DataFolder
+
+#########################################
+# clean export directory
+#########################################
 # remove all bat batch files
 Get-ChildItem -Path $DataFolder -Filter "*.bat" | ForEach-Object {Remove-Item -Path "$DataFolder\$_"}
 # remove all xml format files
@@ -90,10 +93,8 @@ foreach($SqlView in $SqlDatabase.Views | Where-Object {$_.IsSystemObject -eq $fa
     ##########################################
     # sql to truncate destination tables
     ##########################################
-    $Command = ("TRUNCATE TABLE {0};" -f $FqExportSqlName)
+    $Command = ("IF OBJECT_ID('{0}') IS NOT NULL TRUNCATE TABLE {0};" -f $FqExportSqlName)
     Write-Host $Command
-    #$bcpExePath $bcpCommand
-    #Invoke-Command -ScriptBlock {"$bcpExePath $bcpCommand"}
     Out-File -FilePath $SqlTruncateFile -Append -InputObject "$Command" -Encoding ascii
     
     ##########################################
