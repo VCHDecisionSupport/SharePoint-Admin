@@ -5,8 +5,9 @@ DECLARE @EndDate DATETIME = '2016/12/31'
 
 SELECT
 
- cat.Name 'Report_Name'
+ cat.path 'Report_Name'
  ,ex.UserName UserId
+ , count(1) [rowcount]
 FROM ExecutionLog AS ex 
 INNER JOIN Catalog AS cat ON ex.ReportID = cat.ItemID 
 WHERE ex.UserName NOT IN (
@@ -23,7 +24,6 @@ WHERE ex.UserName NOT IN (
 						,'vch\aknox'
 						,'vch\vaggarwal'
 						,'vch\kluers'
-
 						,'vch\mchase2'
 						,'vch\mchase'
 						,'vch\thearty2'
@@ -31,7 +31,7 @@ WHERE ex.UserName NOT IN (
 						,'vch\eyoung'
 
 						--Acute
-						,'vch\aproctor'
+						,'vch\aprocter'
 						,'vch\rdong'
 						,'vch\ssirett'
 						,'vch\jsun5'
@@ -64,6 +64,7 @@ WHERE ex.UserName NOT IN (
 						,'Vch\egladstone'
 
 						--SI
+						,'VCH\cinigo'
 						,'Vch\JChan20'
 						,'vch\mli9'
 						,'vch\mjohnson2'
@@ -123,5 +124,5 @@ WHERE ex.UserName NOT IN (
 						,'vch\clagbao'
 	)
 	AND ex.TimeStart BETWEEN @StartDate AND @EndDate
-	Group by cat.Name, ex.UserName
-ORDER BY cat.Name,  ex.UserName
+	Group by cat.path, ex.UserName
+ORDER BY cat.path,  [rowcount] desc, ex.UserName

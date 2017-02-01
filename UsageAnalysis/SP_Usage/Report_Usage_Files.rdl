@@ -65,7 +65,7 @@ SELECT CONVERT(VARCHAR(10), [logtime], 111)        AccessDate,
                           'i:0#.w|vch\vaggarwal', 'i:0#.w|vch\kluers', 
                           'i:0#.w|vch\mchase2', 
                           'i:0#.w|vch\mchase', 
-                          'i:0#.w|vch\thearty2', 'i:0#.w|vch\pchung2', 
+                           'i:0#.w|vch\pchung2', 
                           'i:0#.w|vch\eyoung' 
                           --Acute 
                           , 'i:0#.w|vch\aproctor', 
@@ -567,7 +567,7 @@ SELECT CONVERT(VARCHAR(10), [logtime], 111)        AccessDate,
           </Style>
         </PageFooter>
         <PageHeight>8.5in</PageHeight>
-        <PageWidth>11in</PageWidth>
+        <PageWidth>7.56313in</PageWidth>
         <LeftMargin>0.1in</LeftMargin>
         <RightMargin>0.1in</RightMargin>
         <TopMargin>0.1in</TopMargin>

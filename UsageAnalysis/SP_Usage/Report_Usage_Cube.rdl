@@ -75,7 +75,7 @@ SELECT
 
 						,'i:0#.w|vch\mchase2'
 						,'i:0#.w|vch\mchase'
-						,'i:0#.w|vch\thearty2'
+						
 						,'i:0#.w|vch\pchung2'
 						,'i:0#.w|vch\eyoung'
 
@@ -762,7 +762,7 @@ order by FileNames, UserInfo</CommandText>
           </Style>
         </PageFooter>
         <PageHeight>8.5in</PageHeight>
-        <PageWidth>11in</PageWidth>
+        <PageWidth>7.56313in</PageWidth>
         <LeftMargin>0.1in</LeftMargin>
         <RightMargin>0.1in</RightMargin>
         <TopMargin>0.1in</TopMargin>

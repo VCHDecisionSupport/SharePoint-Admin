@@ -11,6 +11,7 @@
 						,'i:0#.w|vch\lzeleschuk'
 
 						--DMR
+
 						,'i:0#.w|vch\achung3'
 						,'i:0#.w|vch\aknox'
 						,'i:0#.w|vch\vaggarwal'
@@ -23,7 +24,7 @@
 						,'i:0#.w|vch\eyoung'
 
 						--Acute
-						,'i:0#.w|vch\aproctor'
+						,'i:0#.w|vch\aprocter'
 						,'i:0#.w|vch\rdong'
 						,'i:0#.w|vch\ssirett'
 						,'i:0#.w|vch\jsun5'
@@ -56,6 +57,7 @@
 						,'i:0#.w|vch\egladstone'
 
 						--SI
+						,'i:0#.w|VCH\cinigo'
 						,'i:0#.w|vch\JChan20'
 						,'i:0#.w|vch\mli9'
 						,'i:0#.w|vch\mjohnson2'

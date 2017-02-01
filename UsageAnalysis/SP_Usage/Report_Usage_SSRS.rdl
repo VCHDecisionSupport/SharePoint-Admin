@@ -40,10 +40,13 @@
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>SELECT
+        <CommandText>use ReportServer 
 
- cat.Name 'Report_Name'
+SELECT
+
+ cat.path 'Report_Name'
  ,ex.UserName UserId
+ , count(1) [rowcount]
 FROM ExecutionLog AS ex 
 INNER JOIN Catalog AS cat ON ex.ReportID = cat.ItemID 
 WHERE ex.UserName NOT IN (
@@ -60,7 +63,6 @@ WHERE ex.UserName NOT IN (
 						,'vch\aknox'
 						,'vch\vaggarwal'
 						,'vch\kluers'
-
 						,'vch\mchase2'
 						,'vch\mchase'
 						,'vch\thearty2'
@@ -68,7 +70,7 @@ WHERE ex.UserName NOT IN (
 						,'vch\eyoung'
 
 						--Acute
-						,'vch\aproctor'
+						,'vch\aprocter'
 						,'vch\rdong'
 						,'vch\ssirett'
 						,'vch\jsun5'
@@ -101,6 +103,7 @@ WHERE ex.UserName NOT IN (
 						,'Vch\egladstone'
 
 						--SI
+						,'VCH\cinigo'
 						,'Vch\JChan20'
 						,'vch\mli9'
 						,'vch\mjohnson2'
@@ -160,8 +163,8 @@ WHERE ex.UserName NOT IN (
 						,'vch\clagbao'
 	)
 	AND ex.TimeStart BETWEEN @StartDate AND @EndDate
-	Group by cat.Name, ex.UserName
-ORDER BY cat.Name,  ex.UserName</CommandText>
+	Group by cat.path, ex.UserName
+ORDER BY cat.path,  [rowcount] desc, ex.UserName</CommandText>
       </Query>
       <Fields>
         <Field Name="Report_Name">
@@ -171,6 +174,10 @@ ORDER BY cat.Name,  ex.UserName</CommandText>
         <Field Name="UserId">
           <DataField>UserId</DataField>
           <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="rowcount">
+          <DataField>rowcount</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
@@ -218,13 +225,48 @@ ORDER BY cat.Name,  ex.UserName</CommandText>
                       </Textbox>
                     </CellContents>
                   </TablixCornerCell>
+                  <TablixCornerCell>
+                    <CellContents>
+                      <Textbox Name="Textbox3">
+                        <CanGrow>true</CanGrow>
+                        <KeepTogether>true</KeepTogether>
+                        <Paragraphs>
+                          <Paragraph>
+                            <TextRuns>
+                              <TextRun>
+                                <Value>User Id</Value>
+                                <Style>
+                                  <FontWeight>Bold</FontWeight>
+                                </Style>
+                              </TextRun>
+                            </TextRuns>
+                            <Style>
+                              <TextAlign>Left</TextAlign>
+                            </Style>
+                          </Paragraph>
+                        </Paragraphs>
+                        <rd:DefaultName>Textbox3</rd:DefaultName>
+                        <Style>
+                          <Border>
+                            <Color>LightGrey</Color>
+                            <Style>Solid</Style>
+                          </Border>
+                          <BackgroundColor>#8ab9f2</BackgroundColor>
+                          <PaddingLeft>2pt</PaddingLeft>
+                          <PaddingRight>2pt</PaddingRight>
+                          <PaddingTop>2pt</PaddingTop>
+                          <PaddingBottom>2pt</PaddingBottom>
+                        </Style>
+                      </Textbox>
+                    </CellContents>
+                  </TablixCornerCell>
                 </TablixCornerRow>
               </TablixCornerRows>
             </TablixCorner>
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>1.60417in</Width>
+                  <Width>1.08334in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -233,14 +275,14 @@ ORDER BY cat.Name,  ex.UserName</CommandText>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="UserId">
+                        <Textbox Name="rowcount">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!UserId.Value</Value>
+                                  <Value>=Sum(Fields!rowcount.Value)</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -251,7 +293,7 @@ ORDER BY cat.Name,  ex.UserName</CommandText>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>UserId</rd:DefaultName>
+                          <rd:DefaultName>rowcount</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -275,14 +317,14 @@ ORDER BY cat.Name,  ex.UserName</CommandText>
                   <TablixHeader>
                     <Size>0.25in</Size>
                     <CellContents>
-                      <Textbox Name="Textbox1">
+                      <Textbox Name="Textbox7">
                         <CanGrow>true</CanGrow>
                         <KeepTogether>true</KeepTogether>
                         <Paragraphs>
                           <Paragraph>
                             <TextRuns>
                               <TextRun>
-                                <Value>User Id</Value>
+                                <Value>Request Count</Value>
                                 <Style>
                                   <FontWeight>Bold</FontWeight>
                                 </Style>
@@ -293,7 +335,7 @@ ORDER BY cat.Name,  ex.UserName</CommandText>
                             </Style>
                           </Paragraph>
                         </Paragraphs>
-                        <rd:DefaultName>Textbox1</rd:DefaultName>
+                        <rd:DefaultName>Textbox7</rd:DefaultName>
                         <Style>
                           <Border>
                             <Color>LightGrey</Color>
@@ -360,7 +402,51 @@ ORDER BY cat.Name,  ex.UserName</CommandText>
                     </CellContents>
                   </TablixHeader>
                   <TablixMembers>
-                    <TablixMember />
+                    <TablixMember>
+                      <Group Name="UserId">
+                        <GroupExpressions>
+                          <GroupExpression>=Fields!UserId.Value</GroupExpression>
+                        </GroupExpressions>
+                      </Group>
+                      <TablixHeader>
+                        <Size>1.91667in</Size>
+                        <CellContents>
+                          <Textbox Name="UserId1">
+                            <CanGrow>true</CanGrow>
+                            <KeepTogether>true</KeepTogether>
+                            <Paragraphs>
+                              <Paragraph>
+                                <TextRuns>
+                                  <TextRun>
+                                    <Value>=Fields!UserId.Value</Value>
+                                    <Style>
+                                      <FontSize>9pt</FontSize>
+                                    </Style>
+                                  </TextRun>
+                                </TextRuns>
+                                <Style>
+                                  <TextAlign>Left</TextAlign>
+                                </Style>
+                              </Paragraph>
+                            </Paragraphs>
+                            <rd:DefaultName>UserId1</rd:DefaultName>
+                            <Style>
+                              <Border>
+                                <Color>LightGrey</Color>
+                                <Style>Solid</Style>
+                              </Border>
+                              <PaddingLeft>2pt</PaddingLeft>
+                              <PaddingRight>2pt</PaddingRight>
+                              <PaddingTop>2pt</PaddingTop>
+                              <PaddingBottom>2pt</PaddingBottom>
+                            </Style>
+                          </Textbox>
+                        </CellContents>
+                      </TablixHeader>
+                      <TablixMembers>
+                        <TablixMember />
+                      </TablixMembers>
+                    </TablixMember>
                   </TablixMembers>
                 </TablixMember>
               </TablixMembers>
@@ -371,7 +457,7 @@ ORDER BY cat.Name,  ex.UserName</CommandText>
             <Top>0.53459in</Top>
             <Left>0.18124in</Left>
             <Height>0.5in</Height>
-            <Width>5.3125in</Width>
+            <Width>6.70834in</Width>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -385,9 +471,17 @@ ORDER BY cat.Name,  ex.UserName</CommandText>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Usage Report for SSRS Reports</Value>
+                    <Value>Usage Report for SSRS Reports between </Value>
                     <Style>
-                      <FontSize>18pt</FontSize>
+                      <FontSize>16pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <Color>DarkOrange</Color>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=FormatDateTime(Parameters!StartDate.Value, DateFormat.ShortDate) &amp; " and " &amp; FormatDateTime(Parameters!EndDate.Value,DateFormat.ShortDate)</Value>
+                    <Style>
+                      <FontSize>16pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                       <Color>DarkOrange</Color>
                     </Style>
@@ -399,10 +493,10 @@ ORDER BY cat.Name,  ex.UserName</CommandText>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>0.08333in</Top>
+            <Top>0.06944in</Top>
             <Left>0.18124in</Left>
             <Height>0.40959in</Height>
-            <Width>5.3125in</Width>
+            <Width>7.26042in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -506,7 +600,7 @@ ORDER BY cat.Name,  ex.UserName</CommandText>
           </Style>
         </PageFooter>
         <PageHeight>8.5in</PageHeight>
-        <PageWidth>11in</PageWidth>
+        <PageWidth>7.56313in</PageWidth>
         <LeftMargin>0.1in</LeftMargin>
         <RightMargin>0.1in</RightMargin>
         <TopMargin>0.1in</TopMargin>
@@ -520,7 +614,7 @@ ORDER BY cat.Name,  ex.UserName</CommandText>
       <DataType>DateTime</DataType>
       <DefaultValue>
         <Values>
-          <Value>7/1/2016 12:00:00 AM</Value>
+          <Value>=DateAdd("ww",-1, Today())</Value>
         </Values>
       </DefaultValue>
       <Prompt>From:</Prompt>
